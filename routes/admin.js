@@ -33,6 +33,48 @@ router.get('/', (req, res, next) => {
   }
 });
 
+// ---------- Order aktif ----------
+router.post('/orders/:orderId/items/:itemId/antar', (req, res, next) => {
+  try {
+    const order = store.findById('orders', req.params.orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Order tidak ditemukan' });
+    }
+    const item = order.items.find((i) => i.id === req.params.itemId);
+    if (!item) {
+      return res.status(404).json({ error: 'Item tidak ditemukan' });
+    }
+    if (item.status !== 'siap') {
+      return res.status(400).json({ error: 'Item baru bisa diantar setelah berstatus siap' });
+    }
+    item.status = 'diantar';
+    order.updatedAt = new Date().toISOString();
+    const saved = store.replace('orders', order.id, order);
+    const overallStatus = deriveOrderStatus(saved.items);
+
+    const io = req.app.get('io');
+    io.to(`order:${saved.id}`).emit('order:update', {
+      orderId: saved.id,
+      status: overallStatus,
+      items: saved.items,
+    });
+    io.to('admin').emit('order:update', {
+      orderId: saved.id,
+      status: overallStatus,
+      items: saved.items,
+      tableNomor: saved.tableNomor,
+    });
+    io.to(`kitchen:${item.kategori}`).emit('item:delivered', {
+      orderId: saved.id,
+      itemId: item.id,
+    });
+
+    res.json({ ok: true, status: overallStatus });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // ---------- Meja ----------
 router.get('/tables', async (req, res, next) => {
   try {

@@ -1,0 +1,49 @@
+<%- include('../partials/head', { title }) %>
+<header class="public-header">
+  <div class="public-header__table"><%= table.nomor %></div>
+  <h1>Status Pesanan</h1>
+  <p class="text-muted" id="connection-note">Menghubungkan ke pembaruan realtime…</p>
+</header>
+
+<main class="container container--narrow section--tight" style="padding-bottom: 64px;">
+  <ol class="timeline" id="timeline" data-order-id="<%= order.id %>" data-slug="<%= table.slug %>">
+    <% var steps = [
+      { key: 'baru', label: 'Pesanan diterima', desc: 'Dapur sudah menerima pesananmu.' },
+      { key: 'diproses', label: 'Sedang diproses', desc: 'Item pesanan sedang disiapkan di dapur.' },
+      { key: 'siap', label: 'Siap disajikan', desc: 'Pesanan siap, menunggu diantar ke meja.' },
+      { key: 'diantar', label: 'Sudah diantar', desc: 'Pesanan sudah sampai di mejamu. Selamat menikmati.' },
+    ]; %>
+    <% var order_index = ['baru','diproses','siap','diantar'].indexOf(order.status); %>
+    <% steps.forEach(function(step, idx) { %>
+      <li class="timeline__step <%= idx < order_index ? 'timeline__step--done' : (idx === order_index ? 'timeline__step--current' : '') %>" data-step="<%= step.key %>">
+        <span class="timeline__dot" aria-hidden="true"></span>
+        <div>
+          <div class="timeline__label"><%= step.label %></div>
+          <div class="timeline__desc"><%= step.desc %></div>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+
+  <h2>Rincian Item</h2>
+  <div class="card" id="item-list">
+    <% order.items.forEach(function(item) { %>
+      <div class="ticket__item" data-item-id="<%= item.id %>">
+        <div>
+          <div class="ticket__item-name"><%= item.qty %>x <%= item.nama %></div>
+          <div class="ticket__item-qty"><%= item.kategori %></div>
+        </div>
+        <span class="status-badge status-badge--<%= item.status %>" data-item-status><%= item.status %></span>
+      </div>
+    <% }) %>
+  </div>
+</main>
+
+<script>
+  window.ORDER_ID = <%- JSON.stringify(order.id) %>;
+  window.ORDER_SLUG = <%- JSON.stringify(table.slug) %>;
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/status.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 const express = require('express');
 const store = require('../lib/store');
 const { activeTicketsForStation } = require('../lib/tickets');
-const { STATUS_ORDER } = require('../lib/util');
+const { STATUS_ORDER, deriveOrderStatus } = require('../lib/util');
 
 const router = express.Router();
 
@@ -53,14 +53,26 @@ router.post('/:kategori/items/:orderId/:itemId/maju', (req, res, next) => {
     item.status = STATUS_ORDER[currentIdx + 1];
     order.updatedAt = new Date().toISOString();
     const saved = store.replace('orders', order.id, order);
+    const overallStatus = deriveOrderStatus(saved.items);
 
     const io = req.app.get('io');
     io.to(`kitchen:${kategori}`).emit('item:update', {
       orderId: saved.id,
       item,
     });
+    io.to(`order:${saved.id}`).emit('order:update', {
+      orderId: saved.id,
+      status: overallStatus,
+      items: saved.items,
+    });
+    io.to('admin').emit('order:update', {
+      orderId: saved.id,
+      status: overallStatus,
+      items: saved.items,
+      tableNomor: saved.tableNomor,
+    });
 
-    res.json({ ok: true, item });
+    res.json({ ok: true, item, status: overallStatus });
   } catch (err) {
     next(err);
   }

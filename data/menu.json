@@ -1,98 +1,98 @@
 [
   {
-    "id": "c657ed49-37c2-4bb4-b8ac-00e27e181340",
+    "id": "60a4f29b-5e2d-4ac1-84c9-e757bc864156",
     "nama": "Nasi Goreng Kampung",
     "kategori": "makanan",
     "harga": 28000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "0da85975-d039-4124-bf20-f76b8ca048e6",
+    "id": "ae70e7e3-c95a-41a1-be78-f5ca31120b21",
     "nama": "Ayam Bakar Bumbu Rujak",
     "kategori": "makanan",
     "harga": 35000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "2bb38260-dd92-47bc-b90f-fd2440e64db8",
+    "id": "cc90760a-cd20-4558-b770-1f6dab6b4825",
     "nama": "Mie Godog Jawa",
     "kategori": "makanan",
     "harga": 25000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "46a15bf1-2d07-4b1d-ab38-5e81bce61c11",
+    "id": "200a9096-8633-4048-aa17-2e74a014a1e9",
     "nama": "Sate Ayam 10 Tusuk",
     "kategori": "makanan",
     "harga": 30000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "93c74a05-1b36-48c1-bc72-a806812514ce",
+    "id": "db3730e6-427c-4d65-a2f1-350f1b8f8bf0",
     "nama": "Gado-Gado Sayur",
     "kategori": "makanan",
     "harga": 22000,
     "tersedia": false,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "5653742c-e198-4491-8e0a-d1579883d3a8",
+    "id": "70a0e617-9d6f-4713-b483-72af0cbd3167",
     "nama": "Sop Buntut",
     "kategori": "makanan",
     "harga": 45000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "41ab6f96-bd46-4db4-a553-61baa76a818b",
+    "id": "f858bbae-2bbe-4639-a2a6-0ec91f2b6081",
     "nama": "Es Teh Manis",
     "kategori": "minuman",
     "harga": 8000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.655Z"
   },
   {
-    "id": "38cb560b-0ef5-4443-b908-5de305dda587",
+    "id": "e69d3f39-0b44-468e-bd73-bc69b11ce048",
     "nama": "Es Jeruk Peras",
     "kategori": "minuman",
     "harga": 10000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.656Z"
   },
   {
-    "id": "45277d25-421e-451c-8ac0-816eb14422d8",
+    "id": "cc542be3-83e4-427f-a1fd-aad38c033c43",
     "nama": "Kopi Susu Gula Aren",
     "kategori": "minuman",
     "harga": 18000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.656Z"
   },
   {
-    "id": "350512ee-48a6-4c3f-833c-77bc6b758421",
+    "id": "dbe200b5-ccc5-4466-8a3f-c9144e03cff9",
     "nama": "Wedang Jahe Susu",
     "kategori": "minuman",
     "harga": 15000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.656Z"
   },
   {
-    "id": "01ba90dd-f0df-44ad-876f-984ba2837c3d",
+    "id": "ef8f001c-1901-4e33-a725-320caf44282f",
     "nama": "Jus Alpukat",
     "kategori": "minuman",
     "harga": 17000,
     "tersedia": false,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.656Z"
   },
   {
-    "id": "a8e05cfa-6934-4a38-9be8-27289917c3e0",
+    "id": "b40d4fee-07ce-43d4-8b04-625b24b431db",
     "nama": "Air Mineral",
     "kategori": "minuman",
     "harga": 5000,
     "tersedia": true,
-    "createdAt": "2026-09-27T05:02:23.784Z"
+    "createdAt": "2026-09-27T05:03:52.656Z"
   }
 ]

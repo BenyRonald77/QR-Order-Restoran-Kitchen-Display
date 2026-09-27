@@ -1,0 +1,10 @@
+<%- include('../partials/head', { title }) %>
+<main class="container container--narrow section">
+  <div class="state-panel state-panel--error">
+    <h3>Pesanan tidak ditemukan</h3>
+    <p>Pesanan ini mungkin sudah tidak ada atau tautannya salah. Kamu bisa memesan lagi dari halaman menu meja.</p>
+    <a class="btn btn-primary" href="/order/<%= table.slug %>">Kembali ke Menu <%= table.nomor %></a>
+  </div>
+</main>
+</body>
+</html>

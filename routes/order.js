@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const store = require('../lib/store');
+const { deriveOrderStatus } = require('../lib/util');
 
 const router = express.Router();
 
@@ -103,6 +104,30 @@ router.post('/:slug/api/orders', (req, res, next) => {
     });
 
     res.status(201).json({ id: order.id });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Halaman status pesanan pelanggan
+router.get('/:slug/status/:orderId', (req, res, next) => {
+  try {
+    const table = findTableBySlug(req.params.slug);
+    if (!table) {
+      return res.status(404).render('order/not-found', { title: 'Meja tidak ditemukan' });
+    }
+    const order = store.findById('orders', req.params.orderId);
+    if (!order || order.tableId !== table.id) {
+      return res.status(404).render('order/status-not-found', {
+        title: 'Pesanan tidak ditemukan',
+        table,
+      });
+    }
+    res.render('order/status', {
+      title: `Status Pesanan - ${table.nomor}`,
+      table,
+      order: { ...order, status: deriveOrderStatus(order.items) },
+    });
   } catch (err) {
     next(err);
   }

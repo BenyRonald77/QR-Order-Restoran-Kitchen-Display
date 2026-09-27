@@ -106,10 +106,7 @@
           if (!result.ok) {
             throw new Error(result.data && result.data.error ? result.data.error : 'Gagal mengirim pesanan');
           }
-          cartBar.innerHTML =
-            '<div class="container container--narrow" style="padding:0;">' +
-            '<div class="alert alert--info" role="status">Pesanan terkirim ke dapur. Nomor pesanan: ' +
-            result.data.id.slice(0, 8) + '</div></div>';
+          window.location.href = '/order/' + encodeURIComponent(slug) + '/status/' + result.data.id;
         })
         .catch(function (err) {
           showError(err.message || 'Gagal mengirim pesanan. Periksa koneksi lalu coba lagi.');
