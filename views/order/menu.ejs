@@ -1,0 +1,57 @@
+<%- include('../partials/head', { title }) %>
+<header class="public-header">
+  <div class="public-header__table"><%= table.nomor %></div>
+  <h1>Pilih Menu</h1>
+  <p class="text-muted">Tambahkan item ke keranjang, lalu kirim pesanan ke dapur.</p>
+</header>
+
+<main class="container container--narrow" style="padding-bottom: 120px;">
+  <% var hasAnyItem = menuByCategory.makanan.length > 0 || menuByCategory.minuman.length > 0; %>
+  <% if (!hasAnyItem) { %>
+    <div class="state-panel">
+      <h3>Menu belum tersedia</h3>
+      <p>Restoran belum menambahkan item menu. Silakan panggil staf untuk bantuan pemesanan.</p>
+    </div>
+  <% } else { %>
+    <% ['makanan', 'minuman'].forEach(function(kategori) { %>
+      <% var items = menuByCategory[kategori]; %>
+      <% if (items.length > 0) { %>
+        <section class="menu-category">
+          <h2 class="menu-category__title"><%= kategori === 'makanan' ? 'Makanan' : 'Minuman' %></h2>
+          <% items.forEach(function(item) { %>
+            <div class="menu-item" data-menu-item data-id="<%= item.id %>" data-nama="<%= item.nama %>" data-harga="<%= item.harga %>" data-kategori="<%= item.kategori %>" data-tersedia="<%= item.tersedia %>">
+              <div class="menu-item__info">
+                <div class="menu-item__name"><%= item.nama %></div>
+                <div class="menu-item__price">Rp<%= Number(item.harga).toLocaleString('id-ID') %></div>
+                <% if (!item.tersedia) { %>
+                  <div class="menu-item__unavailable-tag">Sedang habis</div>
+                <% } %>
+              </div>
+              <div class="qty-control">
+                <button type="button" data-qty-minus aria-label="Kurangi <%= item.nama %>" <%= item.tersedia ? '' : 'disabled' %>>&minus;</button>
+                <span class="qty-control__value" data-qty-value>0</span>
+                <button type="button" data-qty-plus aria-label="Tambah <%= item.nama %>" <%= item.tersedia ? '' : 'disabled' %>>&plus;</button>
+              </div>
+            </div>
+          <% }) %>
+        </section>
+      <% } %>
+    <% }) %>
+  <% } %>
+</main>
+
+<div class="cart-bar" id="cart-bar" hidden>
+  <div class="container container--narrow" style="padding: 0;">
+    <div id="cart-error" class="alert alert--error" role="alert" hidden></div>
+    <div class="cart-bar__summary">
+      <span id="cart-count">0 item</span>
+      <span class="cart-bar__total" id="cart-total">Rp0</span>
+    </div>
+    <button class="btn btn-primary btn-block" id="submit-order" type="button">Pesan Sekarang</button>
+  </div>
+</div>
+
+<script>window.ORDER_SLUG = <%- JSON.stringify(table.slug) %>;</script>
+<script src="/js/order.js"></script>
+</body>
+</html>

@@ -1,11 +1,19 @@
 const path = require('path');
+const http = require('http');
 const express = require('express');
+const { Server } = require('socket.io');
 
 const adminRouter = require('./routes/admin');
+const orderRouter = require('./routes/order');
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+// io dipasang di app supaya route bisa emit event lewat req.app.get('io')
+app.set('io', io);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/admin', adminRouter);
+app.use('/order', orderRouter);
 
 app.use((req, res) => {
   res.status(404).render('error', {
@@ -36,8 +45,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+  socket.on('join', (room) => {
+    if (typeof room === 'string' && room.length < 100) {
+      socket.join(room);
+    }
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });
 
-module.exports = { app };
+module.exports = { app, server, io };

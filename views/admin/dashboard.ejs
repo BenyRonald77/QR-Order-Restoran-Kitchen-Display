@@ -4,11 +4,16 @@
   <div class="page-header">
     <div>
       <h1>Dashboard Admin</h1>
-      <p class="text-muted">Ringkasan data operasional restoran.</p>
+      <p class="text-muted">Ringkasan order aktif dari seluruh meja.</p>
     </div>
+    <span class="status-badge status-badge--siap" id="realtime-indicator">Menghubungkan realtime…</span>
   </div>
 
   <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-card__value"><%= activeOrders.length %></div>
+      <div class="stat-card__label">Order aktif</div>
+    </div>
     <div class="stat-card">
       <div class="stat-card__value"><%= tableCount %></div>
       <div class="stat-card__label">Meja terdaftar</div>
@@ -19,10 +24,44 @@
     </div>
   </div>
 
-  <div class="state-panel">
-    <h3>Belum ada order masuk</h3>
-    <p>Daftar order aktif akan tampil di sini setelah alur pemesanan pelanggan tersedia. Untuk saat ini, kelola dulu data <a href="/admin/tables">meja</a> dan <a href="/admin/menu">menu</a>.</p>
+  <div id="order-list">
+    <% if (activeOrders.length === 0) { %>
+      <div class="state-panel" id="empty-state">
+        <h3>Belum ada order masuk</h3>
+        <p>Order baru akan muncul di sini begitu pelanggan submit pesanan dari halaman meja. Coba scan salah satu QR di halaman <a href="/admin/tables">Kelola Meja</a> untuk mengujinya.</p>
+      </div>
+    <% } else { %>
+      <div class="ticket-grid" id="order-grid">
+        <% activeOrders.forEach(function(order) { %>
+          <div class="ticket" data-order-id="<%= order.id %>">
+            <div class="ticket__head">
+              <span class="ticket__table"><%= order.tableNomor %></span>
+              <span class="status-badge status-badge--<%= order.status %>"><%= order.status %></span>
+            </div>
+            <div class="ticket__items">
+              <% order.items.forEach(function(item) { %>
+                <div class="ticket__item" data-item-id="<%= item.id %>">
+                  <div>
+                    <div class="ticket__item-name"><%= item.qty %>x <%= item.nama %></div>
+                    <div class="ticket__item-qty"><%= item.kategori %> &middot; <span class="status-badge status-badge--<%= item.status %>"><%= item.status %></span></div>
+                  </div>
+                  <div class="ticket__item-actions">
+                    <% if (item.status === 'siap') { %>
+                      <form method="post" action="/admin/orders/<%= order.id %>/items/<%= item.id %>/antar" data-antar-form>
+                        <button class="btn btn-accent btn-sm" type="submit">Tandai diantar</button>
+                      </form>
+                    <% } %>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
   </div>
 </main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/admin.js"></script>
 </body>
 </html>

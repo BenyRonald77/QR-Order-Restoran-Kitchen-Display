@@ -1,6 +1,6 @@
 const express = require('express');
 const store = require('../lib/store');
-const { uniqueSlug } = require('../lib/util');
+const { uniqueSlug, deriveOrderStatus } = require('../lib/util');
 const { generateQrDataUrl } = require('../lib/qr');
 
 const router = express.Router();
@@ -9,13 +9,22 @@ function baseUrl(req) {
   return process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
 }
 
+function withDerivedStatus(order) {
+  return { ...order, status: deriveOrderStatus(order.items) };
+}
+
 // ---------- Dashboard ----------
 router.get('/', (req, res, next) => {
   try {
+    const orders = store.readAll('orders').map(withDerivedStatus);
+    const activeOrders = orders
+      .filter((o) => o.status !== 'diantar')
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     const tableCount = store.readAll('tables').length;
     const menuCount = store.readAll('menu').length;
     res.render('admin/dashboard', {
       title: 'Dashboard Admin',
+      activeOrders,
       tableCount,
       menuCount,
     });
