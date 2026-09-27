@@ -1,0 +1,28 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav-staff', { active: 'dashboard' }) %>
+<main class="container section">
+  <div class="page-header">
+    <div>
+      <h1>Dashboard Admin</h1>
+      <p class="text-muted">Ringkasan data operasional restoran.</p>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-card__value"><%= tableCount %></div>
+      <div class="stat-card__label">Meja terdaftar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card__value"><%= menuCount %></div>
+      <div class="stat-card__label">Item menu</div>
+    </div>
+  </div>
+
+  <div class="state-panel">
+    <h3>Belum ada order masuk</h3>
+    <p>Daftar order aktif akan tampil di sini setelah alur pemesanan pelanggan tersedia. Untuk saat ini, kelola dulu data <a href="/admin/tables">meja</a> dan <a href="/admin/menu">menu</a>.</p>
+  </div>
+</main>
+</body>
+</html>

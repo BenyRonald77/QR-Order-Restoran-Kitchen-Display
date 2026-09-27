@@ -1,0 +1,78 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav-staff', { active: 'tables' }) %>
+<main class="container section">
+  <div class="page-header">
+    <div>
+      <h1>Kelola Meja</h1>
+      <p class="text-muted">Setiap meja punya QR sendiri yang mengarah ke halaman pesan. Cetak kartu QR di bawah dan tempel di masing-masing meja.</p>
+    </div>
+  </div>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert--error" role="alert"><%= error %></div>
+  <% } %>
+
+  <div class="card" style="margin-bottom: 32px;">
+    <h2>Tambah Meja Baru</h2>
+    <form method="post" action="/admin/tables" class="form-row">
+      <div class="field">
+        <label for="nomor">Nomor / label meja</label>
+        <input type="text" id="nomor" name="nomor" placeholder="Contoh: Meja 6" required maxlength="40">
+      </div>
+      <button class="btn btn-primary" type="submit">Tambah Meja</button>
+    </form>
+  </div>
+
+  <% if (tables.length === 0) { %>
+    <div class="state-panel">
+      <h3>Belum ada meja terdaftar</h3>
+      <p>Tambahkan meja pertama lewat formulir di atas. QR code akan dibuat otomatis begitu meja disimpan.</p>
+    </div>
+  <% } else { %>
+    <h2>Kartu QR (siap cetak)</h2>
+    <div class="ticket-grid" style="margin-bottom: 40px;">
+      <% tables.forEach(function(table) { %>
+        <div class="qr-print-card">
+          <img src="<%= table.qrDataUrl %>" alt="QR code menuju halaman pesan untuk <%= table.nomor %>">
+          <div class="qr-print-card__label"><%= table.nomor %></div>
+          <div class="text-muted" style="font-size: 0.8125rem; word-break: break-all;"><%= baseUrl %>/order/<%= table.slug %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <h2>Daftar Meja</h2>
+    <div style="overflow-x: auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>QR</th>
+            <th>Nomor Meja</th>
+            <th>Slug / Tautan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% tables.forEach(function(table) { %>
+            <tr>
+              <td><img class="qr-thumb" src="<%= table.qrDataUrl %>" alt="QR <%= table.nomor %>"></td>
+              <td>
+                <form method="post" action="/admin/tables/<%= table.id %>/update" class="form-inline">
+                  <input type="text" name="nomor" value="<%= table.nomor %>" required maxlength="40" style="min-width: 140px;">
+                  <button class="btn btn-outline btn-sm" type="submit">Simpan</button>
+                </form>
+              </td>
+              <td><a href="/order/<%= table.slug %>" target="_blank" rel="noopener">/order/<%= table.slug %></a></td>
+              <td>
+                <form method="post" action="/admin/tables/<%= table.id %>/delete" onsubmit="return confirm('Hapus meja ini? QR yang sudah dicetak tidak akan berfungsi lagi.');">
+                  <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</main>
+</body>
+</html>

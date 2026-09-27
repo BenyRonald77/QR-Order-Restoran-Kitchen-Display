@@ -1,0 +1,95 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav-staff', { active: 'menu' }) %>
+<main class="container section">
+  <div class="page-header">
+    <div>
+      <h1>Kelola Menu</h1>
+      <p class="text-muted">Kategori menentukan stasiun dapur mana yang menerima item ini.</p>
+    </div>
+  </div>
+
+  <% if (error) { %>
+    <div class="alert alert--error" role="alert"><%= error %></div>
+  <% } %>
+
+  <div class="card" style="margin-bottom: 32px;">
+    <h2>Tambah Item Menu</h2>
+    <form method="post" action="/admin/menu" class="form-row">
+      <div class="field">
+        <label for="nama">Nama menu</label>
+        <input type="text" id="nama" name="nama" placeholder="Contoh: Nasi Goreng" required maxlength="80">
+      </div>
+      <div class="field">
+        <label for="kategori">Kategori / stasiun</label>
+        <select id="kategori" name="kategori">
+          <option value="makanan">Makanan</option>
+          <option value="minuman">Minuman</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="harga">Harga (Rp)</label>
+        <input type="number" id="harga" name="harga" min="0" step="500" placeholder="25000" required>
+      </div>
+      <button class="btn btn-primary" type="submit">Tambah Menu</button>
+    </form>
+  </div>
+
+  <% if (menu.length === 0) { %>
+    <div class="state-panel">
+      <h3>Belum ada item menu</h3>
+      <p>Tambahkan item pertama lewat formulir di atas agar pelanggan punya sesuatu untuk dipesan.</p>
+    </div>
+  <% } else { %>
+    <div style="overflow-x: auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% menu.forEach(function(item) { %>
+            <tr>
+              <td>
+                <form method="post" action="/admin/menu/<%= item.id %>/update" class="form-inline">
+                  <input type="text" name="nama" value="<%= item.nama %>" required maxlength="80" style="min-width: 160px;">
+                  <select name="kategori">
+                    <option value="makanan" <%= item.kategori === 'makanan' ? 'selected' : '' %>>Makanan</option>
+                    <option value="minuman" <%= item.kategori === 'minuman' ? 'selected' : '' %>>Minuman</option>
+                  </select>
+                  <input type="number" name="harga" value="<%= item.harga %>" min="0" step="500" style="max-width: 110px;">
+                  <button class="btn btn-outline btn-sm" type="submit">Simpan</button>
+                </form>
+              </td>
+              <td><%= item.kategori %></td>
+              <td>Rp<%= Number(item.harga).toLocaleString('id-ID') %></td>
+              <td>
+                <span class="status-badge <%= item.tersedia ? 'status-badge--siap' : 'status-badge--baru' %>">
+                  <%= item.tersedia ? 'Tersedia' : 'Habis' %>
+                </span>
+              </td>
+              <td>
+                <div class="form-inline">
+                  <form method="post" action="/admin/menu/<%= item.id %>/toggle">
+                    <button class="btn btn-outline btn-sm" type="submit">
+                      <%= item.tersedia ? 'Tandai habis' : 'Tandai tersedia' %>
+                    </button>
+                  </form>
+                  <form method="post" action="/admin/menu/<%= item.id %>/delete" onsubmit="return confirm('Hapus item menu ini?');">
+                    <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</main>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<nav class="staff-nav" aria-label="Navigasi staf">
+  <div class="container">
+    <a class="staff-nav__brand" href="/admin">QR Order Dapur</a>
+    <ul class="staff-nav__links">
+      <li><a href="/admin" <%= active === 'dashboard' ? 'aria-current="page"' : '' %>>Dashboard</a></li>
+      <li><a href="/admin/tables" <%= active === 'tables' ? 'aria-current="page"' : '' %>>Meja</a></li>
+      <li><a href="/admin/menu" <%= active === 'menu' ? 'aria-current="page"' : '' %>>Menu</a></li>
+    </ul>
+  </div>
+</nav>

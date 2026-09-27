@@ -33,6 +33,10 @@ Warna netral tambahan (bukan bagian dari palet inti, hanya struktur): abu gelap 
 - **RHYTHM: 2 (konsisten dengan beberapa variasi).** Tiga jenis halaman (pesan, dapur, status) memakai sistem visual yang sama tapi komposisi berbeda sesuai fungsi: grid kartu menu untuk pelanggan, kolom tiket untuk dapur, satu fokus linimasa status untuk pelanggan yang menunggu. Bukan template seragam, tapi juga bukan asimetris acak.
 - **MOTION: 2 (transisi bermakna, bukan loop).** Tiket baru muncul dengan transisi masuk singkat agar staf dapur sadar ada order baru tanpa harus memindai terus-menerus; perubahan status memberi highlight satu kali saat berubah, tidak berkedip terus. Tidak ada animasi hias yang berjalan tanpa henti.
 
+## Keputusan tema
+
+Produk ini sengaja memakai satu tema terang tetap (krem/terakota), tanpa toggle gelap/terang. Alasan: identitas hangat "kertas menu/nota" di atas adalah bagian dari kepribadian brand, dan seluruh pemakaian berlangsung siang/sore di dalam restoran dengan pencahayaan ruangan, bukan pemakaian malam hari yang butuh mode gelap untuk kenyamanan mata. Ini keputusan brand, bukan keterbatasan teknis.
+
 ## Prinsip aksesibilitas dan mobile
 
 Semua kombinasi teks di atas divalidasi kontras terhadap latar krem/terakota/arang agar memenuhi WCAG AA. Target sentuh minimum 44px di semua tombol karena halaman pelanggan diakses dari HP di meja. Tidak ada horizontal scroll di lebar layar HP standar.
