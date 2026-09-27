@@ -5,6 +5,7 @@ const { Server } = require('socket.io');
 
 const adminRouter = require('./routes/admin');
 const orderRouter = require('./routes/order');
+const kitchenRouter = require('./routes/kitchen');
 
 const PORT = process.env.PORT || 3000;
 
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 
 app.use('/admin', adminRouter);
 app.use('/order', orderRouter);
+app.use('/dapur', kitchenRouter);
 
 app.use((req, res) => {
   res.status(404).render('error', {

@@ -82,9 +82,18 @@ router.post('/:slug/api/orders', (req, res, next) => {
       updatedAt: now,
     });
 
-    // Item sudah dikelompokkan per kategori/stasiun di dalam order.items,
-    // siap dipakai kitchen display begitu fitur itu dibangun.
+    // Item sudah dikelompokkan per kategori/stasiun, dikirim ke kitchen
+    // display masing-masing stasiun secara realtime.
     const io = req.app.get('io');
+    const categories = [...new Set(orderItems.map((i) => i.kategori))];
+    for (const kategori of categories) {
+      io.to(`kitchen:${kategori}`).emit('order:new', {
+        orderId: order.id,
+        tableNomor: order.tableNomor,
+        createdAt: order.createdAt,
+        items: orderItems.filter((i) => i.kategori === kategori),
+      });
+    }
     io.to('admin').emit('order:new', {
       orderId: order.id,
       tableNomor: order.tableNomor,

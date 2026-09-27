@@ -1,0 +1,57 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav-staff', { active: 'dapur-' + kategori }) %>
+<main class="container section">
+  <div class="page-header">
+    <div>
+      <h1>Dapur <%= kategoriLabel %></h1>
+      <p class="text-muted">Tiket baru muncul otomatis begitu pelanggan memesan.</p>
+    </div>
+    <span class="status-badge status-badge--siap" id="realtime-indicator">Menghubungkan realtime…</span>
+  </div>
+
+  <div class="station-toggle">
+    <a href="/dapur/makanan" <%= kategori === 'makanan' ? 'aria-current="page"' : '' %>>Stasiun Makanan</a>
+    <a href="/dapur/minuman" <%= kategori === 'minuman' ? 'aria-current="page"' : '' %>>Stasiun Minuman</a>
+  </div>
+
+  <div id="ticket-container" data-kategori="<%= kategori %>">
+    <% if (tickets.length === 0) { %>
+      <div class="state-panel" id="empty-state">
+        <h3>Belum ada order masuk</h3>
+        <p>Tiket akan muncul di sini secara realtime begitu pelanggan mengirim pesanan yang mengandung item <%= kategoriLabel.toLowerCase() %>.</p>
+      </div>
+    <% } else { %>
+      <div class="ticket-grid" id="ticket-grid">
+        <% tickets.forEach(function(ticket) { %>
+          <div class="ticket" data-order-id="<%= ticket.orderId %>">
+            <div class="ticket__head">
+              <span class="ticket__table"><%= ticket.tableNomor %></span>
+              <span class="ticket__time" data-time="<%= ticket.createdAt %>"></span>
+            </div>
+            <div class="ticket__items">
+              <% ticket.items.forEach(function(item) { %>
+                <div class="ticket__item" data-item-id="<%= item.id %>" data-status="<%= item.status %>">
+                  <div>
+                    <div class="ticket__item-name"><%= item.qty %>x <%= item.nama %></div>
+                    <span class="status-badge status-badge--<%= item.status %>" data-status-badge><%= item.status %></span>
+                  </div>
+                  <div class="ticket__item-actions">
+                    <% if (item.status === 'baru') { %>
+                      <button class="btn btn-primary btn-sm" type="button" data-advance-btn data-order-id="<%= ticket.orderId %>" data-item-id="<%= item.id %>">Mulai Proses</button>
+                    <% } else if (item.status === 'diproses') { %>
+                      <button class="btn btn-accent btn-sm" type="button" data-advance-btn data-order-id="<%= ticket.orderId %>" data-item-id="<%= item.id %>">Tandai Siap</button>
+                    <% } %>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/kitchen.js"></script>
+</body>
+</html>
